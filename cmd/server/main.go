@@ -15,6 +15,8 @@ func main() {
 	})
 
 	r.POST("/user/create", func(c *gin.Context) {
+		username := c.Query("username")
+		password := c.Query("password")
 
 	})
 
