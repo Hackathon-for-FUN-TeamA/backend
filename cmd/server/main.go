@@ -1,6 +1,7 @@
-package main
+package api
 
 import (
+	"github.com/Hackathon-for-FUN-TeamA/backend/internal/user"
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,6 +19,7 @@ func main() {
 		username := c.Query("username")
 		password := c.Query("password")
 
+		user.CreateUser(username, password)
 	})
 
 	r.Run() // 0.0.0.0:8000でサーバを建てる
