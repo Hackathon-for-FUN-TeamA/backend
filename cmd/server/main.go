@@ -22,14 +22,14 @@ func main() {
 
 		if username == "" || password == "" {
 			c.JSON(400, gin.H{
-				"error": "query string is null",
+				"message": "query string is null",
 			})
 		}
 
 		token, err := user.CreateUser(username, password)
 		if err != nil {
 			c.JSON(400, gin.H{
-				"error": err,
+				"message": err,
 			})
 		} else {
 			c.JSON(200, gin.H{
@@ -51,14 +51,14 @@ func main() {
 		}
 
 		// TODO: authとか作って認証できるとよい
-		err := user.Login(username, password)
+		token, err := user.Login(username, password)
 		if err != nil {
 			c.JSON(400, gin.H{
 				"message": err,
 			})
 		} else {
 			c.JSON(200, gin.H{
-				"message": "Login",
+				"token": token,
 			})
 		}
 	})
