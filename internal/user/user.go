@@ -5,35 +5,45 @@ import (
 	"fmt"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/google/uuid"
 	"gopkg.in/gorp.v1"
 )
 
 type User struct {
 	Id       int
+	Token    string
 	Username string
 	Password string
 }
 
-func CreateUser(username, password string) error {
+func CreateUser(username, password string) (string, error) {
 	dbmap, err := initDb()
 	if err != nil {
-		return err
+		return "", err
 	}
 	defer dbmap.Db.Close()
+
+	// token生成
+	uuidobj, err := uuid.NewUUID()
+	if err != nil {
+		return "", err
+	}
 
 	// dbmapにテーブル名登録
 	dbmap.AddTableWithName(User{}, "users")
 
+	// insert
 	userData := &User{
+		Token:    uuidobj.String(),
 		Username: username,
 		Password: password,
 	}
 	err = dbmap.Insert(userData)
 	if err != nil {
-		return err
+		return "", err
 	}
 
-	return nil
+	return uuidobj.String(), nil
 }
 
 func initDb() (*gorp.DbMap, error) {
