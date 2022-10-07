@@ -15,29 +15,31 @@ func main() {
 		})
 	})
 
+	// ユーザ作成
 	r.POST("/user/create", func(c *gin.Context) {
 		username := c.PostForm("username")
 		password := c.PostForm("password")
 
 		if username == "" || password == "" {
 			c.JSON(400, gin.H{
-				"message": "query string is null",
+				"error": "query string is null",
 			})
 		}
 
-		err := user.CreateUser(username, password)
+		token, err := user.CreateUser(username, password)
 		if err != nil {
 			c.JSON(400, gin.H{
-				"message": err,
+				"error": err,
 			})
 		} else {
 			c.JSON(200, gin.H{
-				"message": "Created",
+				"token": token,
 			})
 		}
 
 	})
 
+	// ログイン
 	r.POST("/login", func(c *gin.Context) {
 		username := c.PostForm("username")
 		password := c.PostForm("password")
@@ -59,6 +61,11 @@ func main() {
 				"message": "Login",
 			})
 		}
+	})
+
+	// ドライブ時のログを保存
+	r.POST("/drivelog", func(c *gin.Context) {
+
 	})
 
 	r.Run() // 127.0.0.0:8000でサーバを建てる
