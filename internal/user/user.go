@@ -3,7 +3,6 @@ package user
 import (
 	"database/sql"
 	"fmt"
-	"log"
 
 	_ "github.com/go-sql-driver/mysql"
 	"gopkg.in/gorp.v1"
@@ -14,10 +13,10 @@ type User struct {
 	Password string
 }
 
-func CreateUser(username, password string) {
+func CreateUser(username, password string) error {
 	dbmap, err := initDb()
 	if err != nil {
-		log.Fatal("error initDb", err)
+		return err
 	}
 	defer dbmap.Db.Close()
 
@@ -30,8 +29,10 @@ func CreateUser(username, password string) {
 	}
 	err = dbmap.Insert(userData)
 	if err != nil {
-		log.Fatal("error insert", err)
+		return err
 	}
+
+	return nil
 }
 
 func initDb() (*gorp.DbMap, error) {
