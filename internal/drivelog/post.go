@@ -49,9 +49,9 @@ func initDb() (*gorp.DbMap, error) {
 	// db接続
 	path := fmt.Sprintf(
 		"%s:%s@tcp(127.0.0.1:3306)/%s?charset=utf8&parseTime=true",
-		"root",     // username
-		"password", // password
-		"asayake",  // database
+		"root",    // username
+		"passwd",  // password
+		"asayake", // database
 	)
 	db, err := sql.Open("mysql", path)
 	if err != nil {
