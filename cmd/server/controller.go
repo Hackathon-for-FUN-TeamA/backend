@@ -1,16 +1,16 @@
 package main
 
 import (
-	"github.com/Hackathon-for-FUN-TeamA/backend/internal/drivelog"
-	"github.com/Hackathon-for-FUN-TeamA/backend/internal/user"
+	"github.com/Hackathon-for-FUN-TeamA/backend/internal/db/drivelog"
+	"github.com/Hackathon-for-FUN-TeamA/backend/internal/db/user"
 	"github.com/gin-gonic/gin"
 )
 
-func Ping(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "pong",
-	})
-}
+// func Ping(c *gin.Context) {
+// 	c.JSON(200, gin.H{
+// 		"message": "pong",
+// 	})
+// }
 
 func UserCreate(c *gin.Context) {
 	username := c.PostForm("username")
