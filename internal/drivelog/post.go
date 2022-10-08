@@ -1,25 +1,12 @@
 package drivelog
 
 import (
-	"database/sql"
-	"fmt"
-
+	"github.com/Hackathon-for-FUN-TeamA/backend/internal/db"
 	_ "github.com/go-sql-driver/mysql"
-	"gopkg.in/gorp.v1"
 )
 
-type DriveLog struct {
-	LogId        int
-	UserId       int
-	Date         string
-	Speed        float64
-	Acceleration float64
-	Latitude     float64
-	Longtitude   float64
-}
-
 func Post(userId int, date string, speed, acceleration, latitude, longtitude float64) error {
-	dbmap, err := initDb()
+	dbmap, err := db.InitDb()
 	if err != nil {
 		return err
 	}
@@ -43,26 +30,4 @@ func Post(userId int, date string, speed, acceleration, latitude, longtitude flo
 	}
 
 	return nil
-}
-
-func initDb() (*gorp.DbMap, error) {
-	// db接続
-	path := fmt.Sprintf(
-		"%s:%s@tcp(127.0.0.1:3306)/%s?charset=utf8&parseTime=true",
-		"root",    // username
-		"passwd",  // password
-		"asayake", // database
-	)
-	db, err := sql.Open("mysql", path)
-	if err != nil {
-		return nil, err
-	}
-
-	// dbをdbmapに
-	dbmap := &gorp.DbMap{
-		Db:      db,
-		Dialect: gorp.MySQLDialect{},
-	}
-
-	return dbmap, nil
 }

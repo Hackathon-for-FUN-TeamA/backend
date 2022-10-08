@@ -1,23 +1,13 @@
 package user
 
 import (
-	"database/sql"
-	"fmt"
-
+	"github.com/Hackathon-for-FUN-TeamA/backend/internal/db"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/google/uuid"
-	"gopkg.in/gorp.v1"
 )
 
-type User struct {
-	Id       int
-	Token    string
-	Username string
-	Password string
-}
-
 func CreateUser(username, password string) (string, error) {
-	dbmap, err := initDb()
+	dbmap, err := db.InitDb()
 	if err != nil {
 		return "", err
 	}
@@ -44,26 +34,4 @@ func CreateUser(username, password string) (string, error) {
 	}
 
 	return uuidobj.String(), nil
-}
-
-func initDb() (*gorp.DbMap, error) {
-	// db接続
-	path := fmt.Sprintf(
-		"%s:%s@tcp(127.0.0.1:3306)/%s?charset=utf8&parseTime=true",
-		"root",    // username
-		"passwd",  // password
-		"asayake", // database
-	)
-	db, err := sql.Open("mysql", path)
-	if err != nil {
-		return nil, err
-	}
-
-	// dbをdbmapに
-	dbmap := &gorp.DbMap{
-		Db:      db,
-		Dialect: gorp.MySQLDialect{},
-	}
-
-	return dbmap, nil
 }
