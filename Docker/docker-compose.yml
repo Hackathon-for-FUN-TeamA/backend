@@ -1,6 +1,6 @@
 version: "3"
 services:
-  mysql:
+  asayake-db:
     build: ./mysql/
     volumes:
       - ./mysql/initdb.d:/docker-entrypoint-initdb.d
@@ -10,5 +10,16 @@ services:
       - "127.0.0.1:3306:3306"
     container_name: "mysql-asayake"
     environment:
-      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=passwd
+  asayake-mock:
+    build: ./mysql-mock/
+    volumes:
+      - ./mysql-mock/initdb.d:/docker-entrypoint-initdb.d
+      - ./mysql-mock/db:/var/lib/mysql
+    image: mysql
+    ports:
+      - "127.0.0.1:3306:3306"
+    container_name: "mysql-asayake-mock"
+    environment:
+      - MYSQL_ROOT_PASSWORD=passwd
   

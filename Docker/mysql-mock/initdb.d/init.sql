@@ -28,3 +28,23 @@ CREATE TABLE `drivelogs` (
     `longtitude` real NOT NULL,
     PRIMARY KEY (`log_id`)
 );
+
+-- mock 
+INSERT INTO `users` (
+  `id`,
+  `token`,
+  `username`,
+  `password`
+) 
+VALUES (
+    "1",
+    "sample1",
+    "sample1",
+    "sample1"
+),
+(
+    "2",
+    "sample2",
+    "sample2",
+    "sample2"
+)

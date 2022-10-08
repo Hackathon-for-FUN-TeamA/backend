@@ -1,6 +1,6 @@
 module github.com/Hackathon-for-FUN-TeamA/backend
 
-go 1.19
+go 1.18
 
 require (
 	github.com/KyleBanks/depth v1.2.1 // indirect
