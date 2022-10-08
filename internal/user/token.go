@@ -1,13 +1,13 @@
 package user
 
 import (
-	"fmt"
-
+	"github.com/Hackathon-for-FUN-TeamA/backend/internal/db"
 	_ "github.com/go-sql-driver/mysql"
 )
 
+// tokenからuserを取得
 func GetUserByToken(token string) (int, error) {
-	dbmap, err := initDb()
+	dbmap, err := db.InitDb()
 	if err != nil {
 		return -1, err
 	}
@@ -18,11 +18,6 @@ func GetUserByToken(token string) (int, error) {
 	err = dbmap.SelectOne(&result, "SELECT * FROM `users` WHERE `token`=?", token)
 	if err != nil {
 		return -1, err
-	}
-
-	// resultが空だったらerrorを返す
-	if result.Id <= 0 {
-		return -1, fmt.Errorf("This user doesn't exist.")
 	}
 
 	return result.Id, nil

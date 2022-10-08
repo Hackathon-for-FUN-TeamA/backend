@@ -1,9 +1,13 @@
 package user
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/Hackathon-for-FUN-TeamA/backend/internal/db"
+)
 
 func Login(username, password string) (string, error) {
-	dbmap, err := initDb()
+	dbmap, err := db.InitDb()
 	if err != nil {
 		return "", err
 	}
