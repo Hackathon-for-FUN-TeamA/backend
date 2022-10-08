@@ -18,11 +18,23 @@ func main() {
 
 	// sample
 	r.POST("/throw", func(c *gin.Context) {
-		username := c.PostForm("username")
-		password := c.PostForm("password")
+		type JsonRequest struct {
+			UserName string `json: "username"`
+			Password string `json: "password"`
+		}
+
+		var json JsonRequest
+		err := c.ShouldBindJSON(&json)
+		if err != nil {
+			c.JSON(400, gin.H{
+				"message": "BAD REQUEST",
+			})
+			return
+		}
+
 		c.JSON(200, gin.H{
-			"username": username,
-			"password": password,
+			"username": json.UserName,
+			"password": json.Password,
 		})
 	})
 
