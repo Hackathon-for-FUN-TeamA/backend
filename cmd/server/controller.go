@@ -101,8 +101,8 @@ func PostDriveLog(c *gin.Context) {
 
 func GetDriveLog(c *gin.Context) {
 	// param取得
-	token := c.PostForm("token")
-	date := c.PostForm("date") // 日時・時間
+	token := c.Query("token")
+	date := c.Query("date") // 日時・時間
 
 	userId, err := user.GetUserByToken(token)
 	if err != nil {

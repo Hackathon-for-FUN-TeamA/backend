@@ -21,7 +21,8 @@ DROP TABLE IF EXISTS `drivelogs`;
 CREATE TABLE `drivelogs` (
     `log_id` bigint NOT NULL AUTO_INCREMENT,
     `user_id` bigint NOT NULL,
-    `spped` real NOT NULL,
+    `date` varchar(32) NOT NULL,
+    `speed` real NOT NULL,
     `acceleration` real NOT NULL,
     `latitude` real NOT NULL,
     `longtitude` real NOT NULL,

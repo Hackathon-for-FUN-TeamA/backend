@@ -17,7 +17,7 @@ func Post(userId int, date string, speed, acceleration, latitude, longtitude flo
 
 	// insert
 	userData := &DriveLog{
-		UserId:       userId,
+		User_Id:      userId,
 		Date:         date,
 		Speed:        speed,
 		Acceleration: acceleration,

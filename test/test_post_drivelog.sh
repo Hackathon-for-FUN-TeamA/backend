@@ -5,5 +5,4 @@ curl -X POST $endpoint/drivelog \
     -d speed=100.00 \
     -d acceleration=100.00 \
     -d latitude=100.00 \
-    -d longtitude=100.00 \
-    jq .
+    -d longtitude=100.00
