@@ -6,11 +6,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// func Ping(c *gin.Context) {
-// 	c.JSON(200, gin.H{
-// 		"message": "pong",
-// 	})
-// }
+func Ping(c *gin.Context) {
+	c.JSON(200, gin.H{
+		"message": "pong",
+	})
+}
 
 func UserCreate(c *gin.Context) {
 	username := c.PostForm("username")
@@ -19,14 +19,14 @@ func UserCreate(c *gin.Context) {
 	// 無効なparam
 	if username == "" || password == "" {
 		c.JSON(400, gin.H{
-			"message": "query string is null",
+			"message": "BAD REQUEST",
 		})
 		return
 	}
 
 	token, err := user.CreateUser(username, password)
 	if err != nil {
-		c.JSON(400, gin.H{
+		c.JSON(500, gin.H{
 			"message": err,
 		})
 		return
@@ -44,14 +44,14 @@ func Login(c *gin.Context) {
 	// 無効なparam
 	if username == "" || password == "" {
 		c.JSON(400, gin.H{
-			"message": "query string is null",
+			"message": "BAD REQUEST",
 		})
 		return
 	}
 
 	token, err := user.Login(username, password)
 	if err != nil {
-		c.JSON(400, gin.H{
+		c.JSON(500, gin.H{
 			"message": err,
 		})
 		return
@@ -75,8 +75,6 @@ func PostDriveLog(c *gin.Context) {
 	if err != nil {
 		c.JSON(400, gin.H{
 			"message": err,
-			"token":   token,
-			"user_id": userId,
 		})
 		return
 	}
@@ -84,14 +82,14 @@ func PostDriveLog(c *gin.Context) {
 	// tokenが無効な場合
 	if userId == -1 {
 		c.JSON(401, gin.H{
-			"message": "Not Credential",
+			"message": "UNAUTHORIZED",
 		})
 		return
 	}
 
 	err = drivelog.Post(userId, date, speed, acceleration, latitude, longtude)
 	if err != nil {
-		c.JSON(402, gin.H{
+		c.JSON(500, gin.H{
 			"message": err,
 		})
 		return
@@ -115,25 +113,25 @@ func GetDriveLog(c *gin.Context) {
 
 	// tokenが無効な場合
 	if userId == -1 {
-		c.JSON(400, gin.H{
-			"message": "Not Credential",
+		c.JSON(401, gin.H{
+			"message": "UNAUTHORIZED",
 		})
-	} else {
-		drivelog, err := drivelog.Get(userId, date)
-		// TODO: 入れ子になってて可読性が下がりそう。どうにかしたい
-		if err != nil {
-			c.JSON(400, gin.H{
-				"message": "Not Credential",
-			})
-			return
-		}
-
-		c.JSON(200, gin.H{
-			"speed":        drivelog.Speed,
-			"acceleration": drivelog.Acceleration,
-			"latitude":     drivelog.Latitude,
-			"longtude":     drivelog.Longtitude,
-		})
+		return
 	}
+
+	drivelog, err := drivelog.Get(userId, date)
+	if err != nil {
+		c.JSON(500, gin.H{
+			"message": err,
+		})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"speed":        drivelog.Speed,
+		"acceleration": drivelog.Acceleration,
+		"latitude":     drivelog.Latitude,
+		"longtude":     drivelog.Longtitude,
+	})
 
 }

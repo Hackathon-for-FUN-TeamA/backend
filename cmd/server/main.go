@@ -21,9 +21,3 @@ func main() {
 
 	r.Run() // 127.0.0.0:8000でサーバを建てる
 }
-
-func Ping(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "pong",
-	})
-}
