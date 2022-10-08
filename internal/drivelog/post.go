@@ -1,49 +1,48 @@
-package user
+package drivelog
 
 import (
 	"database/sql"
 	"fmt"
 
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/google/uuid"
 	"gopkg.in/gorp.v1"
 )
 
-type User struct {
-	Id       int
-	Token    string
-	Username string
-	Password string
+type DriveLog struct {
+	LogId        int
+	UserId       int
+	Date         string
+	Speed        float64
+	Acceleration float64
+	Latitude     float64
+	Longtitude   float64
 }
 
-func CreateUser(username, password string) (string, error) {
+func Post(userId int, date string, speed, acceleration, latitude, longtitude float64) error {
 	dbmap, err := initDb()
 	if err != nil {
-		return "", err
+		return err
 	}
 	defer dbmap.Db.Close()
 
-	// token生成
-	uuidobj, err := uuid.NewUUID()
-	if err != nil {
-		return "", err
-	}
-
 	// dbmapにテーブル名登録
-	dbmap.AddTableWithName(User{}, "users")
+	dbmap.AddTableWithName(DriveLog{}, "drivelogs")
 
 	// insert
-	userData := &User{
-		Token:    uuidobj.String(),
-		Username: username,
-		Password: password,
+	userData := &DriveLog{
+		UserId:       userId,
+		Date:         date,
+		Speed:        speed,
+		Acceleration: acceleration,
+		Latitude:     latitude,
+		Longtitude:   longtitude,
 	}
 	err = dbmap.Insert(userData)
 	if err != nil {
-		return "", err
+		return err
 	}
 
-	return uuidobj.String(), nil
+	return nil
 }
 
 func initDb() (*gorp.DbMap, error) {
