@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/Hackathon-for-FUN-TeamA/backend/internal/drivelog"
 	"github.com/Hackathon-for-FUN-TeamA/backend/internal/user"
 	"github.com/gin-gonic/gin"
 )
@@ -66,11 +67,11 @@ func main() {
 	r.POST("/drivelog", func(c *gin.Context) {
 		// param取得
 		token := c.PostForm("token")
-		date := c.PostForm("date")                 // 日時・時間
-		speed := c.PostForm("speed")               // 速度
-		acceleration := c.PostForm("acceleration") // 加速度
-		latitude := c.PostForm("latitude")         // 緯度
-		longtude := c.PostForm("longtude")         // 経度
+		date := c.PostForm("date")                               // 日時・時間
+		speed := c.GetFloat64(c.PostForm("speed"))               // 速度
+		acceleration := c.GetFloat64(c.PostForm("acceleration")) // 加速度
+		latitude := c.GetFloat64(c.PostForm("latitude"))         // 緯度
+		longtude := c.GetFloat64(c.PostForm("longtude"))         // 経度
 
 		userId, err := user.GetUserByToken(token)
 		if err != nil {
