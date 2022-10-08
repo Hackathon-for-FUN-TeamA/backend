@@ -60,3 +60,17 @@
 | acceleration | float | 加速度 |
 | latitude | float | 緯度 |
 | longtitude | float | 経度 |
+
+
+### 使用例
+ユーザ作成
+入力
+```
+curl -d {username=taro, password=pass} http://127.0.0.1:8080/user/create
+```
+結果
+{
+    "token": "8407d217-46fe-11ed-907b-84a938147d00"
+}
+
+
