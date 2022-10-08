@@ -15,7 +15,7 @@ func GetUserByToken(token string) (int, error) {
 
 	// tokenからuserを探す
 	var result User
-	err = dbmap.SelectOne(&result, "SELECT * FROM users WHERE token=?", token)
+	err = dbmap.SelectOne(&result, "SELECT * FROM `users` WHERE `token`=?", token)
 	if err != nil {
 		return -1, err
 	}
