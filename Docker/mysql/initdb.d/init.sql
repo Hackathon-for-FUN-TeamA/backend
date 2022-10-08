@@ -12,7 +12,8 @@ CREATE TABLE `users` (
   `token` varchar(64) NOT NULL,
   `username` varchar(32) NOT NULL,
   `password` varchar(64) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `token` (`token`)
 );
 
 -- CREATE TABLE IN drivelog
