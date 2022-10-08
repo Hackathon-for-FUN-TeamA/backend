@@ -13,18 +13,22 @@ func Ping(c *gin.Context) {
 }
 
 func UserCreate(c *gin.Context) {
-	username := c.PostForm("username")
-	password := c.PostForm("password")
+	// パラメータ取得
+	type JsonRequest struct {
+		UserName string `json: "username"`
+		Password string `json: "password"`
+	}
 
-	// 無効なparam
-	if username == "" || password == "" {
+	var req JsonRequest
+	err := c.ShouldBindJSON(&req)
+	if err != nil {
 		c.JSON(400, gin.H{
-			"message": "BAD REQUEST",
+			"message": err,
 		})
 		return
 	}
 
-	token, err := user.CreateUser(username, password)
+	token, err := user.CreateUser(req.UserName, req.Password)
 	if err != nil {
 		c.JSON(500, gin.H{
 			"message": err,
@@ -38,18 +42,22 @@ func UserCreate(c *gin.Context) {
 }
 
 func Login(c *gin.Context) {
-	username := c.PostForm("username")
-	password := c.PostForm("password")
+	// パラメータ取得
+	type JsonRequest struct {
+		UserName string `json: "username"`
+		Password string `json: "password"`
+	}
 
-	// 無効なparam
-	if username == "" || password == "" {
+	var req JsonRequest
+	err := c.ShouldBindJSON(&req)
+	if err != nil {
 		c.JSON(400, gin.H{
-			"message": "BAD REQUEST",
+			"message": err,
 		})
 		return
 	}
 
-	token, err := user.Login(username, password)
+	token, err := user.Login(req.UserName, req.Password)
 	if err != nil {
 		c.JSON(500, gin.H{
 			"message": err,
@@ -64,14 +72,26 @@ func Login(c *gin.Context) {
 
 func PostDriveLog(c *gin.Context) {
 	// param取得
-	token := c.PostForm("token")
-	date := c.PostForm("date")                               // 日時・時間
-	speed := c.GetFloat64(c.PostForm("speed"))               // 速度
-	acceleration := c.GetFloat64(c.PostForm("acceleration")) // 加速度
-	latitude := c.GetFloat64(c.PostForm("latitude"))         // 緯度
-	longtude := c.GetFloat64(c.PostForm("longtude"))         // 経度
+	type JsonRequest struct {
+		// UserName string `json: "username"`
+		Token        string  `json: "token"`
+		Date         string  `json: "date"`         // 現在の日時
+		Speed        float64 `json: "speed"`        // 速度
+		Acceleration float64 `json: "acceleration"` // 加速度
+		Latitude     float64 `json: "latitude"`     // 緯度
+		Longtitude   float64 `json: "longtitude"`   // 経度
+	}
 
-	userId, err := user.GetUserByToken(token)
+	var req JsonRequest
+	err := c.ShouldBindJSON(&req)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err,
+		})
+		return
+	}
+
+	userId, err := user.GetUserByToken(req.Token)
 	if err != nil {
 		c.JSON(400, gin.H{
 			"message": err,
@@ -87,7 +107,7 @@ func PostDriveLog(c *gin.Context) {
 		return
 	}
 
-	err = drivelog.Post(userId, date, speed, acceleration, latitude, longtude)
+	err = drivelog.Post(userId, req.Date, req.Speed, req.Acceleration, req.Latitude, req.Longtitude)
 	if err != nil {
 		c.JSON(500, gin.H{
 			"message": err,
@@ -101,10 +121,20 @@ func PostDriveLog(c *gin.Context) {
 
 func GetDriveLog(c *gin.Context) {
 	// param取得
-	token := c.Query("token")
-	date := c.Query("date") // 日時・時間
+	type JsonRequest struct {
+		Token string `json: "token"`
+		Date  string `json: "date"` // 現在の日時
+	}
+	var req JsonRequest
+	err := c.ShouldBindJSON(&req)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err,
+		})
+		return
+	}
 
-	userId, err := user.GetUserByToken(token)
+	userId, err := user.GetUserByToken(req.Token)
 	if err != nil {
 		c.JSON(400, gin.H{
 			"message": err,
@@ -119,7 +149,7 @@ func GetDriveLog(c *gin.Context) {
 		return
 	}
 
-	drivelog, err := drivelog.Get(userId, date)
+	drivelog, err := drivelog.Get(userId, req.Date)
 	if err != nil {
 		c.JSON(500, gin.H{
 			"message": err,
