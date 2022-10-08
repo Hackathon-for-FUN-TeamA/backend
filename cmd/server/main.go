@@ -77,20 +77,22 @@ func main() {
 		if err != nil {
 			c.JSON(400, gin.H{
 				"message": err,
+				"token":   token,
+				"user_id": userId,
 			})
 		}
 
 		// tokenが無効な場合
 		if userId == -1 {
-			c.JSON(400, gin.H{
+			c.JSON(401, gin.H{
 				"message": "Not Credential",
 			})
 		} else {
 			err := drivelog.Post(userId, date, speed, acceleration, latitude, longtude)
 			// TODO: 入れ子になってて可読性が下がりそう。どうにかしたい
 			if err != nil {
-				c.JSON(400, gin.H{
-					"message": "Not Credential",
+				c.JSON(402, gin.H{
+					"message": err,
 				})
 			} else {
 				c.JSON(200, gin.H{})
