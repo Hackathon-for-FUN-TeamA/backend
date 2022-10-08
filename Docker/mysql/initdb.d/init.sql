@@ -24,4 +24,5 @@ CREATE TABLE `drivelogs` (
     `acceleration` real NOT NULL,
     `latitude` real NOT NULL,
     `longtitude` real NOT NULL,
+    PRIMARY KEY (`log_id`)
 );
