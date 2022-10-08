@@ -1,4 +1,4 @@
-## endpoint ip address
+## 接続先IPアドレス
 ```35.232.55.64```
 
 ## API仕様
