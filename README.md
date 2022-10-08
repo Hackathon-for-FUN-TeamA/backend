@@ -1,3 +1,6 @@
+## endpoint ip address
+```35.232.55.64```
+
 ## API仕様
 ### POST /user/create
 新規ユーザを作成する
